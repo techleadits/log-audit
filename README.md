@@ -11,6 +11,6 @@ Esta biblioteca é uma interface que permite fácil acesso a manutenção de log
 
 ## Hello world
 - Executar jar 
-  - `java -jar ./build/libs/log-audit-x.x.jar stringdeconexaodasuabase usuario senha`
+  - `java -jar log-audit-x.x.jar stringdeconexaodasuabase usuario senha`
 - exemplo 
   - `java -jar ./build/libs/log-audit-1.1.jar jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=XE))) system oracle`
