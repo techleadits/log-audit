@@ -33,7 +33,7 @@
                     <archive>
                         <manifest>
                             <!-- Jar file entry point -->
-                            <mainClass>com.br.Main</mainClass>
+                            <mainClass>com.br.LogFactory</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

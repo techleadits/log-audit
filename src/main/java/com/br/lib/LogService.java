@@ -1,6 +1,8 @@
 package com.br.lib;
 
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,7 +13,12 @@ public class LogService {
 
 	private static final Logger logger = Logger.getLogger(LogService.class.getName());
 
-	LogService(){
+	public LogService() throws SQLException {
+		repository= new LogRepository();
+		logger.setLevel(Level.ALL);
+	}
+	public LogService(Connection con){
+		repository= new LogRepository(con);
 		logger.setLevel(Level.ALL);
 	}
 	private LogRepository repository;
@@ -30,21 +37,21 @@ public class LogService {
 	}
 
 
-	public void log(String mensagem,Log reference){
+	protected void log(String mensagem,Log reference){
 		try{
 			Log log=new Log(mensagem,reference);
 		
 			Log newlog=repository.log(log);
 
 			reference.setReference(newlog.getReference());
-			reference.setMensaem(newlog.getMensaem());
+			reference.setMensagem(newlog.getMensaem());
 		}catch(Exception e){
 			logger.severe(mensagem);
 			buildErrMessage(e,0);
 		}
 	}
 
-	public void logError(String mensagem,Throwable e,Log reference){
+	protected void logError(String mensagem,Throwable e,Log reference){
 		log(mensagem,reference);
 	
 		StringBuilder strBuilder= new StringBuilder();
@@ -89,51 +96,51 @@ public class LogService {
 			}
 		}
 	}
-	public void add(Parameter parameter, Log reference){
+	protected void add(Parameter parameter, Log reference){
 		try{
 			Log newlog=repository.parameter(parameter);
 			reference.setReference(newlog.getReference());
-			reference.setMensaem(newlog.getMensaem());
+			reference.setMensagem(newlog.getMensaem());
 		}catch(Exception e){
 			logger.severe("add param-> "+parameter.getName());
 			buildErrMessage(e,0);
 		}
 	}
 
-	public void add(String name,String value,Log reference) {
+	protected void add(String name,String value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
-	} 
-	public void add(String name,Integer value,Log reference) {
+	}
+	protected void add(String name,Integer value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
-	} 
-	public void add(String name,float value,Log reference) {
+	}
+	protected void add(String name,float value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
-	} 
-	public void add(String name,Double value,Log reference) {
+	}
+	protected void add(String name,Double value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
 	}
 
-	public void add(String name,Number value,Log reference) {
+	protected void add(String name,Number value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
 	}
 
-	public void add(String name,Boolean value,Log reference) {
+	protected void add(String name,Boolean value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
 	}
-	
-	public void add(String name,LocalDateTime value,Log reference) {
+
+	protected void add(String name,LocalDateTime value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);

@@ -7,6 +7,7 @@ import java.sql.Connection;
 public class OracleConnectionGenerator extends  ConnectionGenerator {
 
     public static OracleConnection gen(Connection con){
+
         return (OracleConnection)con;
     }
 

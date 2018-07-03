@@ -12,10 +12,21 @@ import oracle.jdbc.OracleConnection;
 public class LogRepository  {
 
     private OracleConnection con;
-    public LogRepository(String conStr, String usr, String password) throws SQLException {
-        this.con=(OracleConnection)ConnectionGenerator.gen(conStr,usr,password);
+    public LogRepository() throws SQLException {
     }
 
+    public LogRepository(Connection con)  {
+        this.con=(OracleConnection)con;
+    }
+
+
+    private OracleConnection getConnection()  throws SQLException{
+        if(con!=null){
+            return con;
+        }else{
+            return (OracleConnection)ConnectionGenerator.getConnection();
+        }
+    }
 
     public Log log(Log log)  throws SQLException{
       
@@ -47,7 +58,7 @@ public class LogRepository  {
         "    ? := t_log;"+
         "end;";
         try{
-            try(OracleConnection connection=this.con){
+            try(OracleConnection connection=this.getConnection()){
                 try ( OracleCallableStatement statement=(OracleCallableStatement)connection.prepareCall(block)){
                 
                     clob = connection.createClob();
@@ -106,7 +117,7 @@ public class LogRepository  {
         "end;";
 
         try{
-            try(OracleConnection connection=this.con){
+            try(OracleConnection connection=this.getConnection()){
                 try ( OracleCallableStatement statement=(OracleCallableStatement)connection.prepareCall(block)){
                 
                     clob = connection.createClob();

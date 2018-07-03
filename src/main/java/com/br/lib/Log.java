@@ -30,7 +30,7 @@ public class Log{
     }
 
     //necessary to make easyer service calls
-    public void setService(LogService service) {
+    protected void setService(LogService service) {
         this.service = service;
     }
     String mensaem;
@@ -67,25 +67,25 @@ public class Log{
     /**
      * @param context the context to set
      */
-    public void setContext(String context) {
+    protected void setContext(String context) {
         this.context = context;
     }
     /**
      * @param mensaem the mensaem to set
      */
-    public void setMensaem(String mensaem) {
+    protected void setMensagem(String mensaem) {
         this.mensaem = mensaem;
     }
     /**
      * @param priority the priority to set
      */
-    public void setPriority(int priority) {
+    protected void setPriority(int priority) {
         this.priority = priority;
     }
     /**
      * @param reference the reference to set
      */
-    public void setReference(String reference) {
+    protected void setReference(String reference) {
         this.reference = reference;
     }
 
@@ -94,7 +94,7 @@ public class Log{
    }
 
     public void log(String mensagem){
-         this.setMensaem(mensagem);
+         this.setMensagem(mensagem);
          log();
 	}
 
