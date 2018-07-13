@@ -1,8 +1,8 @@
-package com.br;
+package com.br.log.audit;
 
-import com.br.lib.Log;
-import com.br.lib.LogService;
-import com.br.util.ConnectionGenerator;
+import com.br.log.audit.lib.Log;
+import com.br.log.audit.lib.LogService;
+import com.br.log.audit.util.ConnectionGenerator;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -43,14 +43,17 @@ public class LogFactory {
 
 
 
-    public static Log getLog(String message, int priority, String context) throws SQLException {
+    public static Log getLog(String message, int priority, String context) {
+        try {
+            getLogThrowable(message,priority,context);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Log();
+    }
+
+    public static Log getLogThrowable(String message, int priority, String context) throws SQLException {
         LogService service = new LogService();
         return service.logFactory(message,priority,context);
     }
-
-    public static Log getLog(int priority, String context) throws SQLException {
-        LogService service = new LogService();
-        return service.logFactory(priority,context);
-    }
-
 }

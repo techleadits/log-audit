@@ -1,4 +1,4 @@
-package com.br.util;
+package com.br.log.audit.util;
 
 import oracle.jdbc.driver.OracleConnection;
 

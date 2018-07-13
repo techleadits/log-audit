@@ -1,4 +1,4 @@
-package com.br.lib;
+package com.br.log.audit.lib;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;

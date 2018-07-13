@@ -1,4 +1,4 @@
-package com.br.lib.textLogger;
+package com.br.log.audit.lib.textLogger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.br.lib.textLogger;
+package com.br.log.audit.lib.textLogger;
 import java.io.IOException;
 import java.util.logging.*;
 

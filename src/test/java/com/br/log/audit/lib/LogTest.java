@@ -1,4 +1,4 @@
-package com.br.lib;
+package com.br.log.audit.lib;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;

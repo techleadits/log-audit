@@ -1,7 +1,6 @@
-package com.br.util;
+package com.br.log.audit.util;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

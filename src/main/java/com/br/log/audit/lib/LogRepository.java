@@ -1,9 +1,9 @@
-package com.br.lib;
+package com.br.log.audit.lib;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 
-import com.br.util.ConnectionGenerator;
+import com.br.log.audit.util.ConnectionGenerator;
 
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleConnection;
