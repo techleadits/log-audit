@@ -45,7 +45,7 @@ public class LogFactory {
 
     public static Log getLog(String message, int priority, String context) {
         try {
-            getLogThrowable(message,priority,context);
+            return getLogThrowable(message,priority,context);
         } catch (SQLException e) {
             e.printStackTrace();
         }

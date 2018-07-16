@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.br'
-version = '2.0'
+version = '2.0.1'
 
 description = "log-audit"
 
