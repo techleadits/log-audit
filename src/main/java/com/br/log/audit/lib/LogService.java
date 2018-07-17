@@ -56,12 +56,20 @@ public class LogService {
 	
 		StringBuilder strBuilder= new StringBuilder();
 		for(int i=0; i<e.getStackTrace().length;i++){
-			String formatted = String.format("%04d", i);
-			strBuilder.append("<err id=\""+i+"\">"+e.getStackTrace()[i].toString()+"</err>");
+			strBuilder.append("<err id=\""+i+"\">"+toXmlString(e.getStackTrace()[i].toString())+"</err>");
 		}
 		add("stacktrace","<stacktrace>"+strBuilder.toString()+"</stacktrace>",reference);
 
 		addError(reference,e,0);
+	}
+
+	private static String toXmlString(String xmlText){
+		xmlText=xmlText.replaceAll("<", "&lt;");
+		xmlText=xmlText.replaceAll(">", "&gt;");
+		xmlText=xmlText.replaceAll("\"", "&quot;");
+		xmlText=xmlText.replaceAll("'", "&apos;");
+		xmlText=xmlText.replaceAll("&", "&amp;");
+		return xmlText;
 	}
 
 	private void addError(Log reference,Throwable e,int count){
