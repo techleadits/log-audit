@@ -1,13 +1,17 @@
 package com.br.log.audit.lib;
 
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+@SuppressWarnings({"rawtypes"})
 
 public class LogService {
 
@@ -152,5 +156,53 @@ public class LogService {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
 		add(parameter,reference);
+	}
+
+
+	protected void addObjectFields(Object obj, Log reference){
+		ArrayList<Class> list=new ArrayList<Class>();
+		list.add(obj.getClass());
+        addObjectFields(obj,reference,list);
+	}
+	
+	private void addObjectFields(Object obj, Log reference,ArrayList<Class> previousClasses){
+		
+        for (Field f : obj.getClass().getDeclaredFields()) {
+            String property=f.getName();
+            try{
+                String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1, property.length());
+                java.lang.reflect.Method method = obj.getClass().getMethod(methodName);
+                Object returnValue = method.invoke(obj);
+                if(returnValue!=null){
+					Parameter parameter= new Parameter(property,reference);
+					if(parameter.setValueUnknowType(returnValue)){
+						this.add(parameter,reference);
+					}else if(existsInList(previousClasses,returnValue.getClass())){
+						parameter.setValue("LogService recursivity protection. Will not navigate again in this object");
+						this.add(parameter,reference);
+					}
+					else if(returnValue.getClass().isAssignableFrom(Iterable.class)){
+						for(Object item :(Iterable)returnValue){
+						
+							addObjectFields(item,reference,addAndClone(previousClasses,item.getClass()));
+						}
+					}else{
+						addObjectFields(returnValue,reference,addAndClone(previousClasses,returnValue.getClass()));
+					}
+                }
+            }
+            catch(Exception e){
+				reference.log("Log service error", e);
+            }
+		}
+	}
+	@SuppressWarnings("unchecked")
+	private static ArrayList<Class> addAndClone(ArrayList<Class> list,Class clazz){
+		ArrayList<Class> newList=(ArrayList<Class>)list.clone();
+		newList.add(clazz);
+		return newList;
+	}
+	private static Boolean existsInList(List<Class> list,Class clazz){
+		return clazz!=null&& list.indexOf(clazz)>=0;
 	}
 }
