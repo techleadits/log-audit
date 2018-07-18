@@ -1,7 +1,9 @@
 package com.br.log.audit.lib;
 
 import java.io.InputStream;
+import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,17 +24,6 @@ public class Parameter{
     public Log getLog() {
         return log;
     }
-    // public void setValue(Object value){
-    //     if(value!=null){
-    //         if(value.getClass().isAssignableFrom(Number.class)){
-    //             setValue((Number)value);
-    //         }else if(){
-
-    //         }else{
-    //             setValue(value.toString());
-    //         }
-    //     }
-    // }
 
     public void setValue(String value){
 
@@ -98,6 +89,12 @@ public class Parameter{
         }
     }
 
+    public void setValue(Date value) {
+        setValue( value.toInstant()
+          .atZone(ZoneId.systemDefault())
+          .toLocalDateTime());
+    }
+
     public void setValue(LocalDateTime value){
         if(value!=null){
         this.dataType=DataType.Date;
@@ -108,6 +105,55 @@ public class Parameter{
     public void setName(String name) {
         this.name=name;
     }
+
+    public Boolean setValueUnknowType(Object value){
+     
+        if(this.dataType==null){
+            if(value.getClass()==Integer.class){
+                setValue((Integer)value);
+            }else{
+                try{
+                    Integer.parseInt(value.toString());
+                    setValue((Integer)value);
+                }catch(Exception e){}
+            }
+        }
+        if(this.dataType==null){
+            if(value.getClass()==Float.class){
+                setValue((Float)value);
+            }else{
+                try{
+                    Float.parseFloat(value.toString());
+                    setValue((Float)value);
+                }catch(Exception e){}
+            }
+        }
+
+        if(this.dataType==null){
+            if(value.getClass()==Double.class){
+                setValue((Double)value);
+            }else{
+                try{
+                    Double.parseDouble(value.toString());
+                    setValue((Double)value);
+                }catch(Exception e){}
+            }
+        }
+
+        if(this.dataType==null && value.getClass()==LocalDateTime.class){
+            setValue((LocalDateTime)value);
+        }
+
+        if(this.dataType==null && value.getClass()==Boolean.class){
+            setValue((Boolean)value);
+        }
+
+        if(this.dataType==null&& value.getClass()== String.class ){
+            setValue(value.toString());
+        }
+        return this.dataType!=null;
+    }
+
     public String getName() {
         return name;
     }
