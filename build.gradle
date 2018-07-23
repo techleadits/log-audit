@@ -11,7 +11,8 @@ plugins {
 
 apply from: 'gradle/build/node.gradle'
 
-group = 'com.br'
+group = 'com.br.log.audit'
+
 version gitVersion()
 
 description = "log-audit"
@@ -51,11 +52,12 @@ task mvn(type: MavenExec) {
     goals 'clean', 'package'
 }
 
+
 task jarb(type: Jar) {
 
 
     manifest {
-        attributes 'Main-Class': 'LogFactory'
+        attributes 'Main-Class': 'com.br.log.audit.LogFactory'
     }
     baseName = 'log-audit'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
