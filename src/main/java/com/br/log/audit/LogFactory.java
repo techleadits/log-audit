@@ -2,6 +2,8 @@ package com.br.log.audit;
 
 import com.br.log.audit.lib.Log;
 import com.br.log.audit.lib.LogService;
+import com.br.log.audit.test.SubTestList;
+import com.br.log.audit.test.TestModel;
 import com.br.log.audit.util.ConnectionGenerator;
 
 import javax.sql.DataSource;
@@ -13,8 +15,9 @@ public class LogFactory {
         try {
             configureConnection(args[0],args[1],args[2]);
             Log dbLogger = getLog("hello",1,"TEST.LOG.AUDIT.HELLO");
-
             dbLogger.log("world");
+            // testa mapeamento de objetos
+            dbLogger.log(TestModel.factory());
             System.out.println(dbLogger.toString());
         } catch (SQLException e) {
             System.out.println("err");

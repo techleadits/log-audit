@@ -89,14 +89,17 @@ public class Log{
         this.reference = reference;
     }
 
-    public void log(){
+    protected void log(){
         service.log(this.getMensaem(),this);
    }
 
     public void log(String mensagem){
          this.setMensagem(mensagem);
          log();
-	}
+    }
+    public void log(Object obj) {
+		service.log(obj,this);
+    }
 
 	public void log(String mensagem,Throwable e){
         service.logError(mensagem,e,this);
@@ -127,5 +130,7 @@ public class Log{
 	
 	public void add(String name,LocalDateTime value) {
 		service.add(name,value,this);
-	}
+    }
+   
+
 }

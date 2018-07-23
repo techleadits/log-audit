@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,11 +22,11 @@ public class LogService {
 
 	public LogService() throws SQLException {
 		repository= new LogRepository();
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.WARNING);
 	}
 	public LogService(Connection con){
 		repository= new LogRepository(con);
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.WARNING);
 	}
 	private LogRepository repository;
 
@@ -51,6 +54,23 @@ public class LogService {
 			reference.setMensagem(newlog.getMensaem());
 		}catch(Exception e){
 			logger.severe(mensagem);
+			buildErrMessage(e,0);
+		}
+	}
+
+	protected void log(Object object,Log reference){
+		try{
+			Log log=new Log(object.getClass().getName(),reference);
+		
+			Log newlog=repository.log(log);
+			
+			reference.setReference(newlog.getReference());
+			reference.setMensagem(newlog.getMensaem());
+
+			logObject(object,reference);
+		}catch(Exception e){
+			logger.severe(object.getClass().getName());
+			logger.severe(e.getMessage());
 			buildErrMessage(e,0);
 		}
 	}
@@ -114,7 +134,7 @@ public class LogService {
 			reference.setReference(newlog.getReference());
 			reference.setMensagem(newlog.getMensaem());
 		}catch(Exception e){
-			logger.severe("add param-> "+parameter.getName());
+			logger.warning("add param-> "+parameter.getName());
 			buildErrMessage(e,0);
 		}
 	}
@@ -159,15 +179,26 @@ public class LogService {
 	}
 
 
-	protected void addObjectFields(Object obj, Log reference){
+	protected void logObject(Object obj, Log reference){
 		ArrayList<Class> list=new ArrayList<Class>();
 		list.add(obj.getClass());
-        addObjectFields(obj,reference,list);
+        LogObject(obj,reference,list);
 	}
 	
-	private void addObjectFields(Object obj, Log reference,ArrayList<Class> previousClasses){
+	private static List<Field> getAllFields(Class<?> clazz){
+		LinkedList<Field> list = new LinkedList<Field>();
+		Class<?> current = clazz; 
+		while(current.getSuperclass()!=null){ 
+			// do something with current's fields
+			list.addAll(Arrays.asList(current.getDeclaredFields()));
+			current = current.getSuperclass();
+		}
+		return list;
+	}
+	private void LogObject(Object obj, Log reference,ArrayList<Class> previousClasses){
 		
-        for (Field f : obj.getClass().getDeclaredFields()) {
+		HashMap<String,Object> subObjectsMap= new HashMap<String,Object> ();
+        for (Field f : getAllFields(obj.getClass())) {
             String property=f.getName();
             try{
                 String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1, property.length());
@@ -181,20 +212,49 @@ public class LogService {
 						parameter.setValue("LogService recursivity protection. Will not navigate again in this object");
 						this.add(parameter,reference);
 					}
-					else if(returnValue.getClass().isAssignableFrom(Iterable.class)){
-						for(Object item :(Iterable)returnValue){
+					else{
 						
-							addObjectFields(item,reference,addAndClone(previousClasses,item.getClass()));
-						}
-					}else{
-						addObjectFields(returnValue,reference,addAndClone(previousClasses,returnValue.getClass()));
+						parameter.setValue(returnValue.getClass().getName());
+						this.add(parameter,reference);
+						subObjectsMap.put(property, returnValue);
+						
 					}
                 }
             }
             catch(Exception e){
 				reference.log("Log service error", e);
-            }
+			}
 		}
+
+		for (HashMap.Entry<String, Object> entry : subObjectsMap.entrySet()) {
+			logListOrObject(entry.getKey(),entry.getValue(),reference,previousClasses);
+
+		}
+	}
+
+	private  void logListOrObject(String name,Object value,Log reference,ArrayList<Class> previousClasses){
+
+		if(Iterable.class.isAssignableFrom(value.getClass())){
+			for(Object item :(Iterable)value){
+				logListOrObject(name,item,reference,previousClasses);
+			}
+		}else{
+			this.log(name,reference);
+			reference.add("class", value.getClass().getName());
+
+			reference.add("stack", joinArrayClass(previousClasses));
+			
+			LogObject(value,reference,addAndClone(previousClasses,value.getClass()));
+		}
+	}
+	private static String joinArrayClass( List<Class> classes){
+		StringBuilder sb = new StringBuilder();
+		for (Class s : classes)
+		{
+			sb.append(s.getSimpleName());
+			sb.append(".");
+		}
+		return sb.toString();
 	}
 	@SuppressWarnings("unchecked")
 	private static ArrayList<Class> addAndClone(ArrayList<Class> list,Class clazz){

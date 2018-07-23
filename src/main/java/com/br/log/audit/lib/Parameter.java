@@ -1,7 +1,7 @@
 package com.br.log.audit.lib;
 
 import java.io.InputStream;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -108,38 +108,26 @@ public class Parameter{
 
     public Boolean setValueUnknowType(Object value){
      
-        if(this.dataType==null){
+        if(this.dataType==null && !Iterable.class.isAssignableFrom(value.getClass())){
             if(value.getClass()==Integer.class){
                 setValue((Integer)value);
-            }else{
-                try{
-                    Integer.parseInt(value.toString());
-                    setValue((Integer)value);
-                }catch(Exception e){}
             }
         }
         if(this.dataType==null){
             if(value.getClass()==Float.class){
                 setValue((Float)value);
-            }else{
-                try{
-                    Float.parseFloat(value.toString());
-                    setValue((Float)value);
-                }catch(Exception e){}
             }
         }
 
         if(this.dataType==null){
             if(value.getClass()==Double.class){
                 setValue((Double)value);
-            }else{
-                try{
-                    Double.parseDouble(value.toString());
-                    setValue((Double)value);
-                }catch(Exception e){}
             }
         }
 
+        if(this.dataType==null && value.getClass()==Date.class){
+            setValue((Date)value);
+        }
         if(this.dataType==null && value.getClass()==LocalDateTime.class){
             setValue((LocalDateTime)value);
         }
