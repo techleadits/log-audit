@@ -25,6 +25,7 @@ public class Parameter{
         return log;
     }
 
+    @SuppressWarnings("unused")
     public void setValue(String value){
 
         if(value!=null){

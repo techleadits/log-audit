@@ -2,7 +2,6 @@ package com.br.log.audit;
 
 import com.br.log.audit.lib.Log;
 import com.br.log.audit.lib.LogService;
-import com.br.log.audit.test.SubTestList;
 import com.br.log.audit.test.TestModel;
 import com.br.log.audit.util.ConnectionGenerator;
 

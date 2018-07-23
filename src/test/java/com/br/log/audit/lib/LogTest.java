@@ -12,9 +12,8 @@ public class LogTest {
 
     @Test
     public void testErrorLogging() {
-        Log log= new Log();
-        //xmldb.query("teste","teste")
-        Exception etest=new Exception("erro", new Exception( new SQLException("sub erro", new Exception("fim"))));
+      
+        new Exception("erro", new Exception( new SQLException("sub erro", new Exception("fim"))));
 
         assertThat("", containsString(""));
     }

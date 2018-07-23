@@ -18,7 +18,6 @@ public class ConnectionGenerator {
 
     public static Connection gen(String conStr,String usr,String password) throws SQLException {
 
-        Connection conn = null;
         connectionProps = new Properties();
         connectionProps.put("user", usr);
         connectionProps.put("password",password);
