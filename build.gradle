@@ -3,13 +3,15 @@ plugins {
     id "maven"
     id "idea"
     id "com.github.dkorotych.gradle-maven-exec" version "1.2.2.1"
-     id 'org.ajoberstar.reckon' version '0.8.0'
+    id 'com.palantir.git-version' version '0.11.0'
 }
 
-apply from: 'gradle/build/reckon.gradle'
+
+
+//apply from: 'gradle/build/...'
 
 group = 'com.br'
-version = '2.0.1'
+version gitVersion()
 
 description = "log-audit"
 
@@ -31,10 +33,15 @@ repositories {
 dependencies {
     compile group: 'org.apache.commons', name: 'commons-io', version:'1.3.2'
     compile group: 'org.projectlombok', name: 'lombok', version:'1.16.22'
+    
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.0'
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version:'2.9.2'
     compile group: 'com.oracle', name: 'ojdbc6', version:'11.2.0.4'
     testCompile group: 'junit', name: 'junit', version:'4.12'
+
+    //lombok é um processador de anotações, precisa estar declarado para ser compatível com gradle 5.0
+    annotationProcessor('org.projectlombok:lombok:1.16.22')
+    testAnnotationProcessor('org.projectlombok:lombok:1.16.22')
 }
 
 task mvn(type: MavenExec) {

@@ -1,6 +1,0 @@
-reckon {
-  scopeFromProp()
-  stageFromProp('milestone', 'rc', 'final')
-  // alternative to stageFromProp
-  // snapshotFromProp()
-}
