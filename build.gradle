@@ -60,6 +60,12 @@ task jarb(type: Jar) {
     with jar
 }
 
+task publish(type: Copy) {
+    dependsOn jarb
+    from jar.archivePath // shortcut for createJar.outputs.files
+    into "${projectDir}/../lib/log-audit"
+}   
+
 task all{
     dependsOn 'jarb'
     dependsOn 'mvn'
