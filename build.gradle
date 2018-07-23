@@ -17,6 +17,8 @@ version gitVersion()
 description = "log-audit"
 
 sourceCompatibility = 8
+
+
 targetCompatibility = 8
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
