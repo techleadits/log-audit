@@ -1,0 +1,25 @@
+{
+  "name": "log-audit",
+  "version": "0.1.0",
+  "description": "sub test app",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "node ./node_modules/mocha/bin/_mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lourencomcviana/learning-koa.git"
+  },
+  "author": "lourenço viana",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lourencomcviana/learning-koa/issues"
+  },
+  "homepage": "https://github.com/lourencomcviana/learning-koa#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-git": "^2.7.0"
+  }
+}
