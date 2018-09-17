@@ -82,7 +82,7 @@ public class LogService {
 		for(int i=0; i<e.getStackTrace().length;i++){
 			strBuilder.append("<err id=\""+i+"\">"+toXmlString(e.getStackTrace()[i].toString())+"</err>");
 		}
-		add("stacktrace","<stacktrace>"+strBuilder.toString()+"</stacktrace>",reference);
+		addXml("stacktrace","<stacktrace>"+strBuilder.toString()+"</stacktrace>",reference);
 
 		addError(reference,e,0);
 	}
@@ -142,6 +142,12 @@ public class LogService {
 	protected void add(String name,String value,Log reference) {
 		Parameter parameter = new Parameter(name,reference);
 		parameter.setValue(value);
+		add(parameter,reference);
+	}
+
+	protected void addXml(String name,String value,Log reference) {
+		Parameter parameter = new Parameter(name,reference);
+		parameter.setValueXml(value);
 		add(parameter,reference);
 	}
 	protected void add(String name,Integer value,Log reference) {

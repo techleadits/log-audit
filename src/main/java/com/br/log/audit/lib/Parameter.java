@@ -45,16 +45,19 @@ public class Parameter{
     }
 
     public void setValueXml(String value){
-        try{
-            String source = value;
-            InputStream in = IOUtils.toInputStream(source, "UTF-8");
+        if(value!=null) {
+            try {
+                String source = value;
+                InputStream in = IOUtils.toInputStream(source, "UTF-8");
 
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(in);
-            this.dataType=DataType.Xml;
-            this.value=value;
-        }catch(Exception e){
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(in);
+                this.dataType = DataType.Xml;
+                this.value = value;
+            } catch (Exception e) {
+                this.setValue(value);
+            }
         }
     }
 
