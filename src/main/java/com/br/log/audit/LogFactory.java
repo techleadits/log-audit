@@ -2,25 +2,50 @@ package com.br.log.audit;
 
 import com.br.log.audit.lib.Log;
 import com.br.log.audit.lib.LogService;
+import com.br.log.audit.test.TestClass;
 import com.br.log.audit.util.ConnectionGenerator;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 public class LogFactory {
+    private class Test{
+        String teste="salvando";
+        String teste2="classe";
+    }
     public static void main(String args[]){
-
+        Flowable.just("Hello world").subscribe(System.out::println);
         try {
+            System.out.println("iniciando "+LocalDateTime.now().toString());
             configureConnection(args[0],args[1],args[2]);
             Log dbLogger = getLog("hello",1,"TEST.LOG.AUDIT.HELLO");
+
+            dbLogger.add("string","teste");
+
+            dbLogger.add("number",12);
+
+            dbLogger.add("xml","<parametro>12</parametro>");
+            dbLogger.add("data",LocalDateTime.now());
+
+
+
+            dbLogger.log(new TestClass());
+            dbLogger.log("testando exceção", new Exception("erro teste", new Exception("erro interno do erro teste")));
+
+
             dbLogger.log("world");
+
             // testa mapeamento de objetos
-            System.out.println(dbLogger.toString());
+
         } catch (SQLException e) {
             System.out.println("err");
             e.printStackTrace();
         }
-
+        System.out.println("terminou thread principal! "+LocalDateTime.now().toString());
     }
 
     /**

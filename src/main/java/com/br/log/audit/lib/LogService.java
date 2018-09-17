@@ -202,8 +202,13 @@ public class LogService {
             String property=f.getName();
             try{
                 String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1, property.length());
-                java.lang.reflect.Method method = obj.getClass().getMethod(methodName);
-                Object returnValue = method.invoke(obj);
+				Object returnValue=null;
+                try {
+					java.lang.reflect.Method method = obj.getClass().getMethod(methodName);
+					returnValue = method.invoke(obj);
+				}catch (Exception e){
+				}
+
                 if(returnValue!=null){
 					Parameter parameter= new Parameter(property,reference);
 					if(parameter.setValueUnknowType(returnValue)){
@@ -265,4 +270,38 @@ public class LogService {
 	private static Boolean existsInList(List<Class> list,Class clazz){
 		return clazz!=null&& list.indexOf(clazz)>=0;
 	}
+
+
+//	HashMap<Log,LinkedList<ToDo>> log;
+//
+//	LinkedList<Log> operations;
+//	Thread jobThread;
+//
+//	private  void jobRunner(){
+//		this.jobThread=new Thread(() -> {
+//			//Do whatever
+//			while (true){
+//				try {
+//					Log log=operations.poll();
+//					try {
+//						Thread.sleep(1);
+//					} catch (InterruptedException ex) {
+//					}
+//
+//					this.add(log,);
+//
+//				}catch (Exception e){
+//				}
+//			}
+//		});
+//	}
+//
+//	public void start(){
+//		this.jobThread.start();
+//	}
+//
+//	public void puse(){
+//		this.jobThread.interrupt();
+//	}
+
 }
