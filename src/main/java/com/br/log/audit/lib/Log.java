@@ -170,23 +170,23 @@ public class Log{
             //Do whatever
             while (operations.size() > 0) {
                 try {
-                    System.out.println(operations.size());
+                    //System.out.println(operations.size());
                     ToDo toDo = operations.poll();
 
 
                     if (toDo.getParam() != null) {
-                        System.out.println("Salvando operação parameter"+LocalDateTime.now().toString());
+                        //System.out.println("Salvando operação parameter"+LocalDateTime.now().toString());
                         this.service.add(toDo.param, this);
                     } else if (toDo.log != null) {
                         if (toDo.getE() != null) {
-                            System.out.println("Salvando operação exception"+LocalDateTime.now().toString());
+                            //System.out.println("Salvando operação exception"+LocalDateTime.now().toString());
                             this.service.logError(toDo.getLog(), toDo.getE(), this);
                         }  else {
-                            System.out.println("Salvando operação log"+LocalDateTime.now().toString());
+                            //System.out.println("Salvando operação log"+LocalDateTime.now().toString());
                             this.service.log(toDo.getLog(), this);
                         }
                     }else if (toDo.getGenericObjs() != null) {
-                        System.out.println("Salvando operação objeto "+LocalDateTime.now().toString());
+                        //System.out.println("Salvando operação objeto "+LocalDateTime.now().toString());
                         this.service.logObject(toDo.getGenericObjs(), this);
                     }
 
