@@ -152,6 +152,14 @@ public class Log{
 
     }
 
+    public void addXml(String name,String value) {
+        Parameter parameter = new Parameter(name,this);
+        parameter.setValueXml(value);
+        addOperation( new ToDo(parameter));
+
+    }
+
+
     private void addOperation(ToDo todo){
         operations.addLast(todo);
         run();

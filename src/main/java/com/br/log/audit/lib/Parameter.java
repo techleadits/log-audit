@@ -30,27 +30,31 @@ public class Parameter{
 
         if(value!=null){
         
-            String strippedvalue=value.toLowerCase().trim();
-            try{
-                String source = value;
-                InputStream in = IOUtils.toInputStream(source, "UTF-8");
+            String stripped=value.toLowerCase().trim();
 
-                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(in);
-                this.dataType=DataType.Xml;
-                this.value=value;
-            }catch(Exception e){
-            }
 
             if(this.dataType==null){
-                if(strippedvalue.equals("true")||strippedvalue.equals("false")){
-                    setValue(Boolean.valueOf(strippedvalue));
+                if(stripped.equals("true")||stripped.equals("false")){
+                    setValue(Boolean.valueOf(stripped));
                 }else{
                     this.dataType=DataType.Clob;
                     this.value=value;
                 }
             }
+        }
+    }
+
+    public void setValueXml(String value){
+        try{
+            String source = value;
+            InputStream in = IOUtils.toInputStream(source, "UTF-8");
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(in);
+            this.dataType=DataType.Xml;
+            this.value=value;
+        }catch(Exception e){
         }
     }
 

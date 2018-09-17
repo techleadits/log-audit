@@ -4,13 +4,12 @@ import com.br.log.audit.lib.Log;
 import com.br.log.audit.lib.LogService;
 import com.br.log.audit.test.TestClass;
 import com.br.log.audit.util.ConnectionGenerator;
+import io.reactivex.Flowable;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 public class LogFactory {
     private class Test{
@@ -18,7 +17,7 @@ public class LogFactory {
         String teste2="classe";
     }
     public static void main(String args[]){
-        Flowable.just("Hello world").subscribe(System.out::println);
+
         try {
             System.out.println("iniciando "+LocalDateTime.now().toString());
             configureConnection(args[0],args[1],args[2]);
